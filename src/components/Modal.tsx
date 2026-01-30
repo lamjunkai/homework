@@ -8,14 +8,25 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose }: ModalProps) {
+  const handleAction = () => {
+    // Request fullscreen mode
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if ((document.documentElement as unknown as { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
+      (document.documentElement as unknown as { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
+    } else if ((document.documentElement as unknown as { msRequestFullscreen?: () => void }).msRequestFullscreen) {
+      (document.documentElement as unknown as { msRequestFullscreen: () => void }).msRequestFullscreen();
+    }
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div 
       className="fixed inset-0 z-[100] flex items-center justify-center modal-animate"
-      onClick={onClose}
     >
-      {/* Backdrop */}
+      {/* Backdrop - clicking does NOT close the modal */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-60"></div>
       
       {/* Modal Content */}
@@ -25,7 +36,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       >
         {/* Close Button */}
         <button 
-          onClick={onClose}
+          onClick={handleAction}
           className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition text-gray-500"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,13 +57,13 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
           {/* Buttons */}
           <div className="flex items-center justify-center gap-4">
             <button 
-              onClick={onClose}
+              onClick={handleAction}
               className="px-8 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition"
             >
               Accept
             </button>
             <button 
-              onClick={onClose}
+              onClick={handleAction}
               className="px-8 py-3 bg-gray-100 text-gray-600 font-medium rounded-lg hover:bg-gray-200 transition"
             >
               Ignore
@@ -63,4 +74,3 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
     </div>
   );
 }
-

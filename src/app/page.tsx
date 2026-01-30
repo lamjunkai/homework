@@ -15,7 +15,17 @@ export default function Home() {
     const timer = setTimeout(() => {
       setIsModalOpen(true);
     }, 500);
-    return () => clearTimeout(timer);
+
+    // Disable right-click context menu
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener('contextmenu', handleContextMenu);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('contextmenu', handleContextMenu);
+    };
   }, []);
 
   return (

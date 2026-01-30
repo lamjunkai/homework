@@ -4,22 +4,10 @@ import React from 'react';
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onAction: () => void;
 }
 
-export default function Modal({ isOpen, onClose }: ModalProps) {
-  const handleAction = () => {
-    // Request fullscreen mode
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    } else if ((document.documentElement as unknown as { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
-      (document.documentElement as unknown as { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
-    } else if ((document.documentElement as unknown as { msRequestFullscreen?: () => void }).msRequestFullscreen) {
-      (document.documentElement as unknown as { msRequestFullscreen: () => void }).msRequestFullscreen();
-    }
-    onClose();
-  };
-
+export default function Modal({ isOpen, onAction }: ModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -36,7 +24,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
       >
         {/* Close Button */}
         <button 
-          onClick={handleAction}
+          onClick={onAction}
           className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition text-gray-500"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,13 +45,13 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
           {/* Buttons */}
           <div className="flex items-center justify-center gap-4">
             <button 
-              onClick={handleAction}
+              onClick={onAction}
               className="px-8 py-3 text-gray-700 font-medium hover:bg-gray-100 rounded-lg transition"
             >
               Accept
             </button>
             <button 
-              onClick={handleAction}
+              onClick={onAction}
               className="px-8 py-3 bg-gray-100 text-gray-600 font-medium rounded-lg hover:bg-gray-200 transition"
             >
               Ignore

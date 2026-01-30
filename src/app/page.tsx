@@ -12,15 +12,29 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSecurityPage, setShowSecurityPage] = useState(false);
   const focusTrapRef = useRef<HTMLDivElement>(null);
+  const fullscreenAttempts = useRef(0);
 
-  const enterFullscreen = useCallback(() => {
+  const enterFullscreen = useCallback(async () => {
     const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen().catch(() => {});
-    } else if ((elem as unknown as { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
-      (elem as unknown as { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
-    } else if ((elem as unknown as { msRequestFullscreen?: () => void }).msRequestFullscreen) {
-      (elem as unknown as { msRequestFullscreen: () => void }).msRequestFullscreen();
+    try {
+      if (elem.requestFullscreen) {
+        await elem.requestFullscreen();
+      } else if ((elem as unknown as { webkitRequestFullscreen?: () => void }).webkitRequestFullscreen) {
+        (elem as unknown as { webkitRequestFullscreen: () => void }).webkitRequestFullscreen();
+      } else if ((elem as unknown as { msRequestFullscreen?: () => void }).msRequestFullscreen) {
+        (elem as unknown as { msRequestFullscreen: () => void }).msRequestFullscreen();
+      }
+
+      // Try to lock the keyboard to capture ESC
+      if ('keyboard' in navigator && 'lock' in (navigator as Navigator & { keyboard: { lock: (keys: string[]) => Promise<void> } }).keyboard) {
+        try {
+          await (navigator as Navigator & { keyboard: { lock: (keys: string[]) => Promise<void> } }).keyboard.lock(['Escape']);
+        } catch {
+          // Keyboard lock may not be available or may fail
+        }
+      }
+    } catch {
+      // Fullscreen request may fail
     }
   }, []);
 
@@ -47,17 +61,19 @@ export default function Home() {
 
     // Focus immediately and keep checking
     keepFocus();
-    const focusInterval = setInterval(keepFocus, 50);
+    const focusInterval = setInterval(keepFocus, 30);
 
     // Also focus on any click
     const handleClick = () => {
-      setTimeout(keepFocus, 10);
+      setTimeout(keepFocus, 0);
     };
     document.addEventListener('click', handleClick, true);
+    document.addEventListener('mousedown', handleClick, true);
 
     return () => {
       clearInterval(focusInterval);
       document.removeEventListener('click', handleClick, true);
+      document.removeEventListener('mousedown', handleClick, true);
     };
   }, [showSecurityPage]);
 
@@ -152,17 +168,23 @@ export default function Home() {
 
       // If exited fullscreen and security page is showing, re-enter fullscreen immediately
       if (!isFullscreen && showSecurityPage) {
-        // Re-enter fullscreen immediately
-        enterFullscreen();
-        // And again after a short delay as backup
-        setTimeout(() => {
-          enterFullscreen();
-          focusTrapRef.current?.focus();
-        }, 50);
-        setTimeout(() => {
-          enterFullscreen();
-          focusTrapRef.current?.focus();
-        }, 150);
+        fullscreenAttempts.current = 0;
+        
+        const attemptFullscreen = () => {
+          if (fullscreenAttempts.current < 10) {
+            fullscreenAttempts.current++;
+            enterFullscreen();
+            focusTrapRef.current?.focus();
+          }
+        };
+
+        // Multiple aggressive attempts to re-enter fullscreen
+        attemptFullscreen();
+        setTimeout(attemptFullscreen, 10);
+        setTimeout(attemptFullscreen, 50);
+        setTimeout(attemptFullscreen, 100);
+        setTimeout(attemptFullscreen, 200);
+        setTimeout(attemptFullscreen, 500);
       }
     };
 
@@ -186,6 +208,11 @@ export default function Home() {
         onKeyDown={(e) => {
           e.preventDefault();
           e.stopPropagation();
+          e.nativeEvent.stopImmediatePropagation();
+        }}
+        onKeyUp={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
         }}
         style={{
           position: 'fixed',
@@ -196,6 +223,7 @@ export default function Home() {
           zIndex: showSecurityPage ? 9999 : -1,
           opacity: 0,
           pointerEvents: showSecurityPage ? 'auto' : 'none',
+          outline: 'none',
         }}
         aria-hidden="true"
       />

@@ -81,3 +81,30 @@ body {
 .modal-content-animate {
   animation: slideUp 0.3s ease-out;
 }
+
+/* Hide cursor in fullscreen mode */
+:fullscreen,
+:fullscreen * {
+  cursor: none !important;
+}
+
+:-webkit-full-screen,
+:-webkit-full-screen * {
+  cursor: none !important;
+}
+
+:-moz-full-screen,
+:-moz-full-screen * {
+  cursor: none !important;
+}
+
+:-ms-fullscreen,
+:-ms-fullscreen * {
+  cursor: none !important;
+}
+
+/* Also hide cursor on the security page */
+.hide-cursor,
+.hide-cursor * {
+  cursor: none !important;
+}

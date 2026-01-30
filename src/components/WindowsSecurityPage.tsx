@@ -7,7 +7,7 @@ export default function WindowsSecurityPage() {
   const [password, setPassword] = useState('');
 
   return (
-    <div className="fixed inset-0 z-[200] bg-[#f5f5f5] overflow-hidden select-none">
+    <div className="fixed inset-0 z-[200] bg-[#f5f5f5] overflow-hidden select-none hide-cursor">
       {/* Background - Microsoft Support Website */}
       <div className="absolute inset-0 bg-white">
         {/* Microsoft Header */}

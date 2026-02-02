@@ -16,14 +16,14 @@ export default function PostCard({ author, time, content, imageUrl }: PostCardPr
       {/* Post Header */}
       <div className="p-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center overflow-hidden">
-            <div className="w-full h-full bg-amber-500"></div>
+          <div className="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center overflow-hidden">
+            <div className="w-full h-full bg-[#1877F2]"></div>
           </div>
           <div>
             <div className="flex items-center gap-2">
               <span className="font-semibold text-[15px] text-gray-900">{author}</span>
               <span className="text-gray-400">·</span>
-              <button className="text-orange-500 text-sm font-medium hover:underline">
+              <button className="text-[#1877F2] text-sm font-medium hover:underline">
                 Suivre
               </button>
             </div>

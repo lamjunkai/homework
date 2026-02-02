@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Photo - Social Network",
-  description: "A social network for sharing photos and memories",
+  title: "Facebook - Social Network",
+  description: "Connect with friends and the world around you on Facebook.",
 };
 
 export default function RootLayout({

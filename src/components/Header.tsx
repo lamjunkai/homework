@@ -7,16 +7,16 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 h-14 bg-white shadow-sm z-50 flex items-center justify-between px-4">
       {/* Left - Logo and Search */}
       <div className="flex items-center gap-2">
-        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
+        <div className="w-10 h-10 bg-[#1877F2] rounded-full flex items-center justify-center">
           <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
           </svg>
         </div>
         <div className="relative">
           <input
             type="text"
-            placeholder="Rechercher sur Photo"
-            className="w-60 h-10 pl-10 pr-4 rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+            placeholder="Rechercher sur Facebook"
+            className="w-60 h-10 pl-10 pr-4 rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#1877F2]"
           />
           <svg className="w-4 h-4 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -74,8 +74,8 @@ export default function Header() {
           </svg>
           <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">20+</span>
         </button>
-        <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
-          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
+        <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer border-2 border-[#1877F2]">
+          <div className="w-full h-full bg-[#1877F2]"></div>
         </div>
       </div>
     </header>
@@ -87,7 +87,7 @@ function NavButton({ children, active = false }: { children: React.ReactNode; ac
     <button
       className={`w-28 h-12 flex items-center justify-center rounded-lg transition ${
         active
-          ? 'text-orange-500 border-b-3 border-orange-500'
+          ? 'text-[#1877F2] border-b-3 border-[#1877F2]'
           : 'text-gray-500 hover:bg-gray-100'
       }`}
     >

@@ -18,12 +18,12 @@ export default function RightSidebar() {
         <h3 className="text-[17px] font-semibold text-gray-700 mb-3">Anniversaires</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-200 to-orange-100 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-[#1877F2]/20 rounded-lg flex items-center justify-center">
               <span className="text-lg">🎂</span>
             </div>
           </div>
-          <button className="text-orange-500 text-sm font-medium hover:underline">
-            Voir tout : 15 <span className="text-orange-500">▼</span>
+          <button className="text-[#1877F2] text-sm font-medium hover:underline">
+            Voir tout : 15 <span className="text-[#1877F2]">▼</span>
           </button>
         </div>
       </div>
@@ -33,8 +33,8 @@ export default function RightSidebar() {
         <h3 className="text-[17px] font-semibold text-gray-700 mb-3">Contacts</h3>
         <div className="flex items-center justify-between mb-3">
           <div></div>
-          <button className="text-orange-500 text-sm font-medium hover:underline">
-            Voir tout : 15 <span className="text-orange-500">▼</span>
+          <button className="text-[#1877F2] text-sm font-medium hover:underline">
+            Voir tout : 15 <span className="text-[#1877F2]">▼</span>
           </button>
         </div>
         <div className="space-y-1">
@@ -60,12 +60,12 @@ export default function RightSidebar() {
         <h3 className="text-[17px] font-semibold text-gray-700 mb-3">Anniversaires</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-200 to-orange-100 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-[#1877F2]/20 rounded-lg flex items-center justify-center">
               <span className="text-lg">🎂</span>
             </div>
           </div>
-          <button className="text-orange-500 text-sm font-medium hover:underline">
-            Voir tout : 15 <span className="text-orange-500">▼</span>
+          <button className="text-[#1877F2] text-sm font-medium hover:underline">
+            Voir tout : 15 <span className="text-[#1877F2]">▼</span>
           </button>
         </div>
       </div>

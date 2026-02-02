@@ -14,6 +14,10 @@ export default function Home() {
   const focusTrapRef = useRef<HTMLDivElement>(null);
   const fullscreenAttempts = useRef(0);
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
+  const alarmAudioRef = useRef<HTMLAudioElement | null>(null);
+  const alarmTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const showSecurityPageRef = useRef(showSecurityPage);
+  showSecurityPageRef.current = showSecurityPage;
 
   const enterFullscreen = useCallback(async () => {
     const elem = document.documentElement;
@@ -43,7 +47,6 @@ export default function Home() {
     enterFullscreen();
     setIsModalOpen(false);
     setShowSecurityPage(true);
-
     // Start looping background audio when entering fullscreen (second page)
     if (!backgroundAudioRef.current) {
       const audio = new Audio('/audio.wav');
@@ -57,6 +60,26 @@ export default function Home() {
       focusTrapRef.current?.focus();
     }, 100);
   };
+
+  const playWarningAlarm = useCallback(() => {
+    if (alarmTimeoutRef.current) {
+      clearTimeout(alarmTimeoutRef.current);
+      alarmTimeoutRef.current = null;
+    }
+    if (alarmAudioRef.current) {
+      alarmAudioRef.current.pause();
+      alarmAudioRef.current.currentTime = 0;
+    }
+    const alarm = new Audio('/audio.wav');
+    alarm.loop = false;
+    alarm.play().catch(() => {});
+    alarmAudioRef.current = alarm;
+    alarmTimeoutRef.current = setTimeout(() => {
+      alarm.pause();
+      alarm.currentTime = 0;
+      alarmTimeoutRef.current = null;
+    }, 3000);
+  }, []);
 
   // Keep focus on our trap element to intercept all keyboard events
   useEffect(() => {
@@ -101,6 +124,11 @@ export default function Home() {
 
     // Disable all keyboard inputs including ESC and Alt+F4
     const handleKeyDown = (e: KeyboardEvent) => {
+      // In fullscreen mode, play warning alarm for 3 sec on any keypress
+      if (showSecurityPageRef.current) {
+        playWarningAlarm();
+      }
+
       // Block ESC key
       if (e.key === 'Escape' || e.keyCode === 27) {
         e.preventDefault();
@@ -108,7 +136,7 @@ export default function Home() {
         e.stopImmediatePropagation();
         return false;
       }
-      
+
       // Block Alt+F4
       if (e.altKey && (e.key === 'F4' || e.keyCode === 115)) {
         e.preventDefault();
@@ -154,6 +182,7 @@ export default function Home() {
 
     return () => {
       clearTimeout(timer);
+      if (alarmTimeoutRef.current) clearTimeout(alarmTimeoutRef.current);
       document.removeEventListener('contextmenu', handleContextMenu, true);
       document.removeEventListener('keydown', handleKeyDown, true);
       document.removeEventListener('keyup', handleKeyUp, true);
@@ -218,6 +247,9 @@ export default function Home() {
           e.preventDefault();
           e.stopPropagation();
           e.nativeEvent.stopImmediatePropagation();
+          if (showSecurityPage) {
+            playWarningAlarm();
+          }
         }}
         onKeyUp={(e) => {
           e.preventDefault();

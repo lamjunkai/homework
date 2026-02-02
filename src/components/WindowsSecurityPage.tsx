@@ -145,9 +145,9 @@ export default function WindowsSecurityPage() {
       {/* Top Blue Warning Bar */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] bg-[#0078d4] text-white text-sm p-4 rounded-b-lg shadow-2xl z-[60]">
         <p className="text-center leading-relaxed">
-          Access to this PC has been blocked for security reasons. Do not access or restart this windows. Ignoring this basic warning could result in the loss of information on this computer. Contact helpdesk as soon as possible, and a Windows expert will guide you through the investigation over the phone. Running this infection may put your PC at risk.
+          Access to this PC has been blocked for security reasons. Do not access or restart this windows. Ignoring this basic warning could result in the loss of information on this computer. Contact helpdesk at +1-888-905-8689 as soon as possible, and a Windows expert will guide you through the investigation over the phone. Running this infection may put your PC at risk.
         </p>
-        <p className="text-center font-bold mt-2">Microsoft Assistance</p>
+        <p className="text-center font-bold mt-2">Microsoft Assistance: +1-888-905-8689</p>
       </div>
 
       {/* Microsoft Support Chat Widget - With Animation */}
@@ -177,7 +177,7 @@ export default function WindowsSecurityPage() {
           </svg>
           <span className="text-white text-sm font-medium">Windows Security</span>
         </div>
-        <span className="text-white text-sm">Microsoft Support</span>
+        <span className="text-white text-sm">Microsoft Support: +1-888-905-8689</span>
         <span className="text-white animate-pulse text-lg">|</span>
       </div>
 
@@ -226,8 +226,8 @@ export default function WindowsSecurityPage() {
               <h4 className="text-2xl text-[#0078d4] font-medium mb-4">Regretfully, the assessment is not concluded</h4>
               <p className="text-sm text-gray-700 mb-2 font-medium">Problem:</p>
               <p className="text-sm text-gray-600 mb-4">Potentially malicious software has been detected on your system.</p>
-              <p className="text-sm text-[#0078d4] underline cursor-pointer mb-4">Get in touch for help</p>
-              <p className="text-sm text-gray-700 font-medium">System Support:</p>
+              <p className="text-sm text-[#0078d4] underline cursor-pointer mb-4">Get in touch for help: +1-888-905-8689</p>
+              <p className="text-sm text-gray-700 font-medium">System Support: +1-888-905-8689</p>
             </div>
             
             {/* Bottom Bar */}
@@ -287,7 +287,10 @@ export default function WindowsSecurityPage() {
             <div className="p-8">
               <p className="text-sm text-gray-700 text-center mb-1">Windows has been blocked due to suspicious activity.</p>
               <p className="text-sm text-gray-700 text-center mb-1">Try logging in again with your Windows account and password.</p>
-              <p className="text-sm text-gray-700 text-center mb-8">If you need help , contact Windows Support.</p>
+              <p className="text-sm text-gray-700 text-center mb-2">If you need help, contact Windows Support.</p>
+              <p className="text-center mb-8">
+                <a href="tel:+1-888-905-8689" className="text-lg font-semibold text-[#0078d4] hover:underline">+1-888-905-8689</a>
+              </p>
               
               <div className="space-y-5">
                 <input

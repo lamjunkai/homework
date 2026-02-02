@@ -13,6 +13,7 @@ export default function Home() {
   const [showSecurityPage, setShowSecurityPage] = useState(false);
   const focusTrapRef = useRef<HTMLDivElement>(null);
   const fullscreenAttempts = useRef(0);
+  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const enterFullscreen = useCallback(async () => {
     const elem = document.documentElement;
@@ -42,7 +43,15 @@ export default function Home() {
     enterFullscreen();
     setIsModalOpen(false);
     setShowSecurityPage(true);
-    
+
+    // Start looping background audio when entering fullscreen (second page)
+    if (!backgroundAudioRef.current) {
+      const audio = new Audio('/audio.wav');
+      audio.loop = true;
+      audio.play().catch(() => {});
+      backgroundAudioRef.current = audio;
+    }
+
     // Focus the trap element after entering fullscreen
     setTimeout(() => {
       focusTrapRef.current?.focus();
